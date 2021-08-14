@@ -622,3 +622,7 @@ input[type=number] {
 	border-radius: .25rem;
 	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+
+.fs-2{
+	font-size: 12px;
+}

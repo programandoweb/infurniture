@@ -52,6 +52,7 @@ const App=(props)=>{
                         placeholder={(props.placeholder)?props.placeholder:props.title}
                         disabled={props.disabled}
                         readOnly={props.readonly}
+                        event={props.event}
                         required={(props.required)?true:""}
                         step={(props.step)?props.step:""}
                         defaultValue={props.defaultValue}/>

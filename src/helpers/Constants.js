@@ -274,8 +274,8 @@ const exportar  = {
                   RechargeInventaryItem:{
                       public:false,
                       label:"Alimentar Items artículos",
-                      url:"GestionInventario/rechargeInventaryItem",
-                      metodo:"rechargeInventaryItem",
+                      url:"GestionInventario/RechargeInventaryItem",
+                      metodo:"RechargeInventaryItem",
                       ico:"",
                   },
                 },

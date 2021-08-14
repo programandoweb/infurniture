@@ -7,6 +7,7 @@ import Config from '../../helpers/Config'
 import queryString from 'query-string';
 import Listar from './Listar'
 import AddItem from './AddItem'
+import RechargeInventaryItem from './RechargeInventaryItem'
 const queryStringParams = queryString.parse(window.location.search);
 const App=(props)=>{
   const [data, setData]       = useState([]);
@@ -30,6 +31,7 @@ const App=(props)=>{
                 <BrowserRouter>
                    <Switch>
                       <Route exact path={"/apanel/gestionInventario"} component={Listar} />
+                      <Route exact path={"/apanel/gestionInventario/rechargeInventaryItem/:id"} component={RechargeInventaryItem} />
                       <Route exact path={"/apanel/gestionInventario/AgregarItemsArticulos/:id"} component={AddItem} />
                       <Route exact path={"/apanel/gestionInventario/EditarItemsArticulos/:id"} component={AddItem} />
                    </Switch>

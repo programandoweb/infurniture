@@ -159,9 +159,9 @@ const App=(props)=>{
                               <td>{row.label}</td>
                               <td>{row.codigo}</td>
                               <td className="text-center">
-                                <NavLink to={"/apanel/gestionInventario/rechargeIventaryItem?app="+queryStringParams.app+"&id="+row.token} >
-                                  <FontAwesomeIcon title="Agregar al inventario" onClick={(e)=>{open(e,row)}} icon={faPlusCircle} className="cursor-pointer mr-2"/>
-                                </NavLink>
+                                {privilegios.EditarItems!==undefined?<NavLink to={"/apanel/"+privilegios.RechargeInventaryItem.url+"/"+row.token+"?app="+Functions.set_segments_modulos(modulo,privilegios.RechargeInventaryItem)}>
+                                  <FontAwesomeIcon title="Agregar al inventario" icon={faPlusCircle} className="cursor-pointer mr-2"/>
+                                </NavLink>:false}
                                 {privilegios.EditarItems!==undefined?<NavLink to={"/apanel/"+privilegios.AgregarItems.url+"/"+row.token+"?app="+Functions.set_segments_modulos(modulo,privilegios.AgregarItems)}>
                                   <FontAwesomeIcon title="Ver movimientos" icon={faSearch} className="cursor-pointer"/>
                                 </NavLink>:false}
