@@ -150,6 +150,9 @@ const App=(props)=>{
                   <tr>
                     <th>Artículo</th>
                     <th>Código</th>
+                    <th className="text-center">Entrada</th>
+                    <th className="text-center">Salida</th>
+                    <th className="text-center">Disponibles</th>
                     <th className="text-center">Acción</th>
                   </tr>
                 </thead>
@@ -158,6 +161,9 @@ const App=(props)=>{
                     return  <tr className="col-12 col-sm-3 mb-3 component-table" key={key}>
                               <td>{row.label}</td>
                               <td>{row.codigo}</td>
+                              <td className="text-center">{row.entrada}</td>
+                              <td className="text-center">{row.salida}</td>
+                              <td className="text-center">{row.restante}</td>
                               <td className="text-center">
                                 {privilegios.EditarItems!==undefined?<NavLink to={"/apanel/"+privilegios.RechargeInventaryItem.url+"/"+row.token+"?app="+Functions.set_segments_modulos(modulo,privilegios.RechargeInventaryItem)}>
                                   <FontAwesomeIcon title="Agregar al inventario" icon={faPlusCircle} className="cursor-pointer mr-2"/>

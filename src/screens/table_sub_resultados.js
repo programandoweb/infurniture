@@ -1,5 +1,4 @@
 const App=(props)=>{
-  console.log(props.data);
   return  <>
             <h5 className="mt-3">Historial inventario {props.title}</h5>
             <div className="pl-sm-3">

@@ -140,7 +140,7 @@ const App=(props)=>{
                       </div>
                     </div>
                     <div className="col">
-                      <div className="p-3">
+                      <div className="p-0 pt-2 p-sm-3 ">
                         <ClienteTabs data={openCliente}/>
                       </div>
                     </div>

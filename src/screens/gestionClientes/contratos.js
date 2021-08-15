@@ -36,8 +36,7 @@ const App=(props)=>{
               <div className="p-3 text-white">
                 <table className="table mb-3">
                   <thead>
-                    <th width="50">#</th>
-                    <th>Cotización</th>
+                    <th>Factura</th>
                     <th width="150" className="text-right">Monto total</th>
                     <th width="50" className="text-right"></th>
                   </thead>
@@ -45,41 +44,10 @@ const App=(props)=>{
                     {cotizaciones.length>0?<>
                         {cotizaciones.map((row,key)=>{
                           return  <tr>
-                                    <td>{row.consecutivo}</td>
                                     <td>{row.label}</td>
                                     <td className="text-right">{row.total_str}</td>
                                     <td className="text-center">
                                       <a target="_blank" href={context.Config.ConfigApirest+"PDF/cotizacion?id="+row.token}>
-                                        <FontAwesomeIcon icon={faFilePdf}/>
-                                      </a>
-                                    </td>
-                                  </tr>
-                        })}
-                      </>:<tr>
-                      <td colspan="4">No hay registros</td>
-                    </tr>}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div className="border bg-gray mt-3">
-              <div className="p-3 text-white">
-                <table className="table">
-                  <thead>
-                    <th width="50">#</th>
-                    <th>Ordenes de servicio</th>
-                    <th width="150" className="text-right">Monto total</th>
-                    <th width="50" className="text-right"></th>
-                  </thead>
-                  <tbody>
-                    {ordenes.length>0?<>
-                        {ordenes.map((row,key)=>{
-                          return  <tr>
-                                    <td>{row.consecutivo}</td>
-                                    <td>{row.label}</td>
-                                    <td className="text-right">{row.total_str}</td>
-                                    <td className="text-center">
-                                      <a target="_blank" href={context.Config.ConfigApirest+"PDF/cotizacion?os=true&id="+row.token}>
                                         <FontAwesomeIcon icon={faFilePdf}/>
                                       </a>
                                     </td>

@@ -38,7 +38,7 @@ const App=(props)=>{
 
   return <div className="row pb-2">
             <div className={props.classNameMain!==undefined?props.classNameMain:"col"}>
-              <div className={props.classNameLabel!==undefined?props.classNameLabel:""}>
+              <div className={props.classNameLabel!==undefined?props.classNameLabel:"labelTitle"}>
                 <b>{props.title} {limiteCaracteres?" | Límite óptimo ("+limite+")":false}</b>
               </div>
               <div>

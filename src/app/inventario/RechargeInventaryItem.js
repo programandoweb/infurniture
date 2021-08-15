@@ -38,6 +38,7 @@ const App=()=>{
                                         </div>
                             })
       //setTimeout(function(){ context.setModalShow({  show:false, }); history.goBack(); }, 3000);
+      getInit()
     }
   }
 

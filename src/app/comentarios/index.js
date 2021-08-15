@@ -191,9 +191,6 @@ const App =(props)=>{
               </div>
             </div>
             <div className="row mb-3">
-              <div className="col-3">
-
-              </div>
               <div className="col mb-3">
                 <div className="p-2">
                   <form onSubmit={onSubmit}>
@@ -216,18 +213,18 @@ const App =(props)=>{
                         className="form-control"
                         onChange={onChange}></textarea>:<pre className="p-3">Enviando mensaje...</pre>}
                     <div className="row mt-3">
-                      <div className="col p-0 ml-3">
-                        <button type="submit" className="btn btn-primary">
+                      <div className="col-6 col-sm-6 p-0 ml-0 ml-sm-3 mb-3">
+                        <button type="submit" className="btn btn-primary col-12">
                           Enviar
                         </button>
                       </div>
-                      <div className="col-1 p-0 text-right mr-1">
+                      <div className="col-3 col-sm-1 p-0 text-right mr-lg-1">
                         <Grabador
                                   enviar_audio={enviar_audio}
                                   modulo={modulo}
                         />
                       </div>
-                      <div className="col-1 p-0 ">
+                      <div className="col-3 col-sm-1 p-0 ">
                         <div className={!blockTextarea?"btn btn-warning uploadFile position-relative":"btn btn-warning uploadFile position-relative disabled"}>
                           <input type="file" className="inputfile position-absolute" onChange={upload} />
                           <FontAwesomeIcon icon={faUpload}/>

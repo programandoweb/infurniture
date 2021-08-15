@@ -17,12 +17,15 @@ const App=(props)=>{
     window.open(Config.ConfigApirest+"PDF/cliente?id="+props.data.token)
   }
 
-  return  <div className="col">
+  return  <div className="col p-0">
             <div className="card">
               <div className="card-body">
                 <Tabs defaultActiveKey="home"  id="uncontrolled-tab-example">
                   <Tab eventKey="home" title="Datos">
                     <Datos {...props}/>
+                  </Tab>
+                  <Tab eventKey="fiador" title="Datos Fiador">
+                    <Datos fiador={true} {...props}/>
                   </Tab>
                   <Tab eventKey="gestion" title="Gestión comercial">
                     <Gestion {...props}/>

@@ -1,7 +1,7 @@
 const App =(props)=>{
   return  <div className="row pb-2">
             <div className={props.classNameMain!==undefined?props.classNameMain:"col"}>
-              <div className={props.classNameLabel!==undefined?props.classNameLabel:""}>
+              <div className={props.classNameLabel!==undefined?props.classNameLabel:"labelTitle"}>
                 <b>{props.title}</b>
               </div>
               <select name={props.name}
@@ -19,7 +19,7 @@ const App =(props)=>{
                       return <option value={row.value} key={key}>{row.label}</option>
                     }else {
                       return <option value={row.label} key={key}>{row.label}</option>
-                    }                    
+                    }
                   })}
                 </>:false}
               </select>

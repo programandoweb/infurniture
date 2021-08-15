@@ -31,8 +31,8 @@ const App=(props)=>{
         data.user   =   context.Store.get("user").token
         data.app    =   JSON.stringify(modulo)
         data.token  =   context.Store.get("user").token
-        data.tabla  =   "ma_tipo_funcionario"
-        data.get_funcionarios    =   "ma_tipo_funcionario"
+        data.tabla                =   "ma_tipo_funcionario"
+        data.get_funcionarios     =   "ma_tipo_funcionario"
     Functions.PostAsync("Maestros","get_tablas_maestras",data,context,{name:"callbackTablasMaestras",funct:callbackTablasMaestras})
   }
 
@@ -54,6 +54,9 @@ const App=(props)=>{
         dataR.user   =   context.Store.get("user").token
         dataR.token  =   props.data.token
         dataR.app    =   JSON.stringify(modulo)
+        if (props.fiador!==undefined) {
+          dataR.fiador =   props.fiador
+        }
     Functions.PostAsync("Usuarios","getUsuario",dataR,context,{name:"callbackInit",funct:callbackInit})
   }
 
@@ -64,10 +67,10 @@ const App=(props)=>{
       if (e.target.name==="departamento") {
         getMunicipio(e.target.value)
       }
-      if (e.target.name==="apellidos") {
-        let elemento    = document.getElementById("nombres");
-        elemento.value  = e.target.value
-      }
+      // if (e.target.name==="apellidos") {
+      //   let elemento    = document.getElementById("nombres");
+      //   elemento.value  = e.target.value
+      // }
   }
 
   const getMunicipio=(departamento_)=>{
@@ -88,6 +91,9 @@ const App=(props)=>{
         dataR.user           =   context.Store.get("user").token
         dataR.token          =   props.data.token
         dataR.app            =   JSON.stringify(modulo)
+        if (props.fiador!==undefined) {
+          dataR.fiador =   props.fiador
+        }
     Functions.PostAsync("Usuarios","setUsuarios",dataR,context,{name:"callbackSubmit",funct:callbackSubmit})
   }
 
@@ -100,6 +106,7 @@ const App=(props)=>{
                                           <div className="btn btn-primary mt-3" onClick={()=>context.setModalShow({show:false,message:"",size:"sm"})}>Continuar</div>
                                         </div>
                             })
+      getInit()                      
   }
 
   return  <>  {open?<div className="row">
