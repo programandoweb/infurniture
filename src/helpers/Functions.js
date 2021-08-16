@@ -1,6 +1,7 @@
 import Config from "./Config";
 import Store from "./Store";
 import axios from 'axios';
+import  queryString from 'query-string';
 // import socketIOClient from "socket.io-client";
 // const Socket      =   socketIOClient(Config.ConfigSocketUrl);
 
@@ -171,10 +172,9 @@ const PostAsync =  async (modulo,m,objeto,context,callback,loading) =>  {
     return data.append (v[0],v[1]);
   })
 
-
-
-
-
+  if (objeto.app === undefined) {
+    //data.append ("app",queryString.parse(window.location.search).app);
+  }
 
   data.append ("method", "post");
   data.append ("PUBLIC_KEY", process.env.REACT_APP_PUBLIC_KEY);

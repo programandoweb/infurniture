@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import StateContext from '../helpers/ContextState';
 import Functions from '../helpers/Functions';
+import Config from '../helpers/Config';
 import { faSearch,faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ClienteTabs from '../screens/ClienteTabs';
@@ -141,7 +142,7 @@ const App=(props)=>{
                     </div>
                     <div className="col">
                       <div className="p-0 pt-2 p-sm-3 ">
-                        <ClienteTabs data={openCliente}/>
+                        <ClienteTabs data={openCliente} />
                       </div>
                     </div>
                   </>}
@@ -153,10 +154,10 @@ const App=(props)=>{
                       Todos los clientes
                     </div>
                   </div>
-                  <div class="col-12 col-sm-3 d-none">
-                    <div onClick={()=>onClickChangeVerificados(1)} class={verificados===0?"btn btn-warning btn-block":"btn btn-dark btn-block"} >
-                      Verificados
-                    </div>
+                  <div class="col-12 col-sm-3">
+                    <a href={Config.ConfigAppUrl+"apanel/usuarios/agregar?filter=4&app=registrar::usuarios::registrar::Registrar::usuarios/registrar::1&id=0&redirect="+window.location.href}  class={verificados===0?"btn btn-warning btn-block":"btn btn-dark btn-block"} >
+                      Agregar Cliente
+                    </a>
                   </div>
                 </div>
               </div>
@@ -170,7 +171,7 @@ const App=(props)=>{
                 <tbody>
                   {data.map((row,key)=>{
                     return  <tr className="col-12 col-sm-3 mb-3 component-table" key={key}>
-                              <td><b>{row.apellidos}</b> ({row.nombres})</td>
+                              <td><b>{row.nombres} {row.apellidos}</b></td>
                               <td>{row.telefono}</td>
                               <td>{row.celular}</td>
                               <td className="text-center"><FontAwesomeIcon onClick={(e)=>{open(e,row)}} icon={faSearch} className="cursor-pointer"/></td>

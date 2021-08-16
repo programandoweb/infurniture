@@ -23,6 +23,7 @@ const App=()=>{
 
 
   useEffect(() => {
+    console.log();
     getInit()
   },[])
 
@@ -110,9 +111,12 @@ const App=()=>{
                             size:"sm",
                             message:  <div className="text-center">
                                         Usuario registrado correctamente
-                                        <div className="btn btn-primary mt-3" onClick={()=>document.location.href=Config.ConfigAppUrl+"apanel/usuarios/lista?filter="+queryStringParams.filter+"&app=listar::usuarios::todos::Lista::usuarios/lista::1"}>Continuar</div>
+                                        {queryStringParams.redirect!==undefined?<a className="btn btn-primary2">Cancelar</a>:<div className="btn btn-primary mt-3" onClick={()=>document.location.href=Config.ConfigAppUrl+"apanel/usuarios/lista?filter="+queryStringParams.filter+"&app=listar::usuarios::todos::Lista::usuarios/lista::1"}>Continuar</div>}
                                       </div>
                           })
+    if (queryStringParams.redirect!==undefined) {
+       setTimeout(function(){ document.location.href=queryStringParams.redirect}, 3000);
+    }
   }
 
   const getMunicipio=(departamento_)=>{
@@ -289,7 +293,7 @@ const App=()=>{
 
                       <div className="col-12 col-sm-6 mb-2">
                         <button type="submit" className="btn btn-primary mr-2">Guardar</button>
-                        <button type="button" className="btn btn-primary2" onClick={()=>document.location.href=Config.ConfigAppUrl+"apanel/usuarios/lista?filter="+queryStringParams.filter+"&app=listar::usuarios::todos::Lista::usuarios/lista::1"}>Cancelar</button>
+                        {queryStringParams.redirect!==undefined?<a href={queryStringParams.redirect} className="btn btn-primary2">Cancelar</a>:<button type="button" className="btn btn-primary2" onClick={()=>document.location.href=Config.ConfigAppUrl+"apanel/usuarios/lista?filter="+queryStringParams.filter+"&app=listar::usuarios::todos::Lista::usuarios/lista::1"}>Cancelar</button>}
                       </div>
                     </div>
                   </form>

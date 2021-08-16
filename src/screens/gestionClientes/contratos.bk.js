@@ -14,14 +14,12 @@ const App=(props)=>{
   const modulo          =   Functions.segments_modulos(queryStringParams.app);
   const [cotizaciones, setCotizaciones] = useState([]);
   const [open, setOpen] = useState(false);
-
+  const [openPagos, setOpenPagos] = useState(false);
 
 
   useEffect(() => {
-    if (!open) {
-      getInit()
-    }    
-  },[open])
+    getInit()
+  },[])
 
   const getInit=()=>{
     let data        =   {}
@@ -39,7 +37,14 @@ const App=(props)=>{
   return  <div className="pt-3">
             <div className="border bg-gray">
               <div className="p-3 ">
-                <>
+                {openPagos?<>
+                  <div className="row justify-content-end mb-3">
+                    <div className="col-12 col-sm-2">
+                      <div className="btn btn-warning btn-block" onClick={()=>setOpenPagos(openPagos?false:true)}>Cerrar</div>
+                    </div>
+                  </div>
+                </>:false}
+                {!openPagos?<>
                   {open?<>
                     <div className="row justify-content-end mb-3">
                       <div className="col-12 col-sm-2">
@@ -56,6 +61,7 @@ const App=(props)=>{
                     <table className="table mb-3">
                       <thead>
                         <th>Factura</th>
+                        <th width="150" className="text-center">Financiación</th>
                         <th width="150" className="text-right">Pagos</th>
                         <th width="150" className="text-right">Saldo Pendiente</th>
                         <th width="150" className="text-right">Monto total</th>
@@ -66,10 +72,12 @@ const App=(props)=>{
                             {cotizaciones.map((row,key)=>{
                               return  <tr>
                                         <td>{row.op_facturas_id}</td>
-                                        <td className="text-right">{row.financiacion.total_pagos_realizados!==undefined?Functions.format(parseFloat(row.financiacion.total_pagos_realizados) + parseFloat(row.financiacion.monto_inicial)):"-"}</td>
-                                        <td className="text-right">{row.financiacion.total_pagos_realizados!==undefined?Functions.format( parseFloat(row.total) -  (parseFloat(row.financiacion.total_pagos_realizados) + parseFloat(row.financiacion.monto_inicial) ) )  :"-"}</td>
+                                        <td className="text-center">-</td>
+                                        <td className="text-right">0.00</td>
+                                        <td className="text-right">0.00</td>
                                         <td className="text-right">{Functions.format(row.total)}</td>
                                         <td className="text-center">
+                                          {row.financiacion.op_financiamiento_id!==undefined?<FontAwesomeIcon className="mr-2 cursor-pointer" icon={faCashRegister} onClick={()=>setOpenPagos(row)}/>:false}
                                           <FontAwesomeIcon icon={faSearch} className="cursor-pointer" onClick={()=>setOpen(row)}/>
                                         </td>
                                       </tr>
@@ -80,7 +88,7 @@ const App=(props)=>{
                       </tbody>
                     </table>
                   </>}
-                </>
+                </>:false}
               </div>
             </div>
           </div>

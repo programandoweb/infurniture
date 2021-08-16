@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import Functions from '../../helpers/Functions';
-import { NavLink, useParams, useHistory  } from "react-router-dom";
+import { useParams, useHistory  } from "react-router-dom";
 import Config from '../../helpers/Config';
 import Input from '../../screens/inputs';
 import Select from '../../screens/select';
@@ -15,6 +15,7 @@ const App=()=>{
   const params              =   useParams();
   const context             =   React.useContext(StateContext);
   const [inputs, setInputs] =   useState(false);
+  const [required, setRequired] =   useState(true);
   const [record, setRecord] =   useState([]);
   const [modulo, setModulo] =   useState(false);
   const [privilegios, setPrivilegios]       =   useState({});
@@ -39,11 +40,18 @@ const App=()=>{
                             })
       //setTimeout(function(){ context.setModalShow({  show:false, }); history.goBack(); }, 3000);
       getInit()
+      setInputs({})
+       document.getElementById("myForm").reset();
     }
   }
 
   const onChange=(e)=>{
     Functions.Inputs(e,inputs, setInputs);
+    if (e.target.name==="accion" && e.target.value==='-') {
+      setRequired(false)
+    }else if (e.target.name==="accion" && e.target.value==='+') {
+      setRequired(true)
+    }
   }
 
   const getInit=()=>{
@@ -77,9 +85,9 @@ const App=()=>{
             {modulo?<><div className="card">
                 <div className="card-body">
                   <h5>{modulo[3]} <b>{inputs.label} ({inputs.codigo})</b></h5>
-                  <form onSubmit={onSubmit}>
+                  <form onSubmit={onSubmit} id="myForm">
                     <div className="row pb-2">
-                      <div className="col-12 col-sm-6 mb-2">
+                      <div className="col-12 col-sm-3 mb-2">
                         <Select
                             defaultValue={inputs.accion}
                             title="Acción"
@@ -90,8 +98,9 @@ const App=()=>{
                             onChange={onChange}
                           />
                       </div>
-                      <div className="col-12 col-sm-6 mb-2">
+                      <div className="col-12 col-sm-3 mb-2">
                         <Input
+                            required={true}
                             autocomplete={false}
                             defaultValue={inputs.cantidad}
                             title="Cantidad"
@@ -103,7 +112,43 @@ const App=()=>{
                             onChange={onChange}
                         />
                       </div>
-                      <div className="col-12 col-sm-6 mb-2">
+                      {required?<div className="col-12 col-sm-2 mb-2">
+                        <Input
+                            required={true}
+                            autocomplete={false}
+                            defaultValue={inputs.precio_factura}
+                            title="Precio factura"
+                            placeholder="Precio factura"
+                            name="precio_factura"
+                            className="form-control"
+                            onChange={onChange}
+                        />
+                      </div>:false}
+                      {required?<div className="col-12 col-sm-2 mb-2">
+                        <Input
+                            required={true}
+                            autocomplete={false}
+                            defaultValue={inputs.precio_decontado}
+                            title="Precio de contado"
+                            placeholder="Precio de contado"
+                            name="precio_decontado"
+                            className="form-control"
+                            onChange={onChange}
+                        />
+                      </div>:false}
+                      {required?<div className="col-12 col-sm-2 mb-2">
+                        <Input
+                            required={true}
+                            autocomplete={false}
+                            defaultValue={inputs.precio_credito}
+                            title="Precio crédito"
+                            placeholder="Precio crédito"
+                            name="precio_credito"
+                            className="form-control"
+                            onChange={onChange}
+                        />
+                      </div>:false}
+                      <div className="col-12 col-sm-12 mb-2">
                         <Input
                             autocomplete={false}
                             defaultValue={inputs.observacion}
@@ -114,6 +159,7 @@ const App=()=>{
                             onChange={onChange}
                         />
                       </div>
+
                     </div>
                     <div className="row justify-content-end pb-2">
                       <div className="col-12 col-sm-4 mb-2 text-right">
