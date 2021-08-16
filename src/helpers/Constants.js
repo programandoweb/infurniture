@@ -239,6 +239,25 @@ const exportar  = {
               metodo:"listar",
             },
         },{
+          GestionCartera:{
+            public:true,
+            label:"Gestión de cartera",
+            url:"GestionCartera",
+            ico:"",
+            metodo:"listar",
+            items:[
+              {
+                ListarUsuarios:{
+                    public:false,
+                    label:"Mostrar cartera",
+                    url:"GestionCartera/ListarCartera",
+                    metodo:"ListarCartera",
+                    ico:"",
+                },
+              }
+            ]
+          }
+        },{
             GestionInventario:{
               public:true,
               label:"Gestión inventario",

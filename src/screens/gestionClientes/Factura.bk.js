@@ -135,7 +135,7 @@ const App=(props)=>{
                             })
     }
     if (data.response.id!==undefined && formas_pagos2==='CR') {
-      setFinanciacion(data.response.factura)
+      //setFinanciacion(data.response.factura)
     }
   }
 
@@ -274,6 +274,29 @@ const App=(props)=>{
                   </>:false}
                 </form>
               </div>
+            {active?<div className="card mb-3 d-none">
+                      <div className="card-body">
+                        <div className="row">
+                          <div className="col h4 mb-3 border-bottom pb-2">
+                            Datos del producto
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-12 col-sm-6">
+                            <div><b>Producto / COD</b></div>
+                            <div>{string2.label} ({string2.codigo})</div>
+                          </div>
+                          <div className="col-12 col-sm-3">
+                            <div className="text-sm-center"><b>Precio de Contado</b></div>
+                            <div className="text-sm-center">{string2.precio_decontado_string}</div>
+                          </div>
+                          <div className="col-12 col-sm-3">
+                            <div className="text-sm-center"><b>Precio de Crédito</b></div>
+                            <div className="text-sm-center">{string2.precio_credito_string}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>:false}
             {articulos.length>0?  <>
                                     <div className="card">
                                       <div className="card-body">
@@ -335,10 +358,9 @@ const App=(props)=>{
                                     </div>
                                   </>:false}
             </>:<div className="row">
-                  {financiacion && financiacion.op_facturas_id!==undefined && financiacion.financiacion===undefined?<>
-                    {console.log(financiacion)}
+                  {financiacion.financiacion.length===0?<>
                     <div className="col-12 col-sm-3">
-                      <div><b>Monto factura:</b></div>
+                      <div><b>Monto financiación:</b></div>
                       <div className="text-left">{Functions.format(financiacion.total)}</div>
                     </div>
                     <div className="col-12 col-sm-2">
@@ -468,7 +490,7 @@ const App=(props)=>{
                                         {Functions.format(row2.monto-row2.monto_pagos_realizados)}
                                       </div>
                                       <div className="col">
-                                        {row2.monto-row2.monto_pagos_realizados>0?<input type="number" placeholder={"monto a cancelar " +Functions.format(row2.monto)+" ó pagos parciales"} name="monto_pago" className="form-control" onChange={(e)=>setMontopagoCuota(e.target.value)}/>:false}
+                                        <input type="number" placeholder={"monto a cancelar " +Functions.format(row2.monto)+" ó pagos parciales"} name="monto_pago" className="form-control" onChange={(e)=>setMontopagoCuota(e.target.value)}/>
                                       </div>
                                       <div className="col">
                                         {row2.monto-row2.monto_pagos_realizados>0?<div className="btn btn-primary" onClick={()=>pagoCuota(row2)}>Agregar Pago</div>:false}

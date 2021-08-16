@@ -22,6 +22,7 @@ import { Helmet } from 'react-helmet';
 import queryString from 'query-string';
 import Inmuebles from '../app/inmuebles';
 import GestionInventario from '../app/inventario';
+import GestionCartera from '../app/cartera';
 import Informes from '../app/informes';
 const queryStringParams = queryString.parse(window.location.search);
 
@@ -64,6 +65,7 @@ const App=(props)=>{
               <Route exact path={"/apanel/ordenes*"} render={()=><Ordenes/>}/>
               <Route exact path={"/apanel/gestion_Clientes*"} render={()=><Inmuebles/>}/>
               <Route exact path={"/apanel/gestionInventario*"} render={()=><GestionInventario/>}/>
+              <Route exact path={"/apanel/GestionCartera*"} render={()=><GestionCartera/>}/>
               <Route exact path={"/apanel/usuarios*"} render={()=><Usuarios/>}/>
               <Route exact path={"/apanel/Evento*"} render={()=><Evento/>}/>
               <Route exact path={"/apanel/gestion_proyectos*"} render={()=><Proyectos/>}/>
