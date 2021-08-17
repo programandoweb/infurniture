@@ -2,8 +2,7 @@ import React,{useState,useEffect} from 'react';
 import Functions from '../../helpers/Functions';
 import Select from '../../screens/select';
 import StateContext from '../../helpers/ContextState'
-import Config from '../../helpers/Config'
-import { faWindowClose,faPlus,faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { faWindowClose,faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import queryString from 'query-string';
 const queryStringParams = queryString.parse(window.location.search);
@@ -51,18 +50,6 @@ const App=(props)=>{
     }else if (e.target.name==="forma_pago" && e.target.value==='') {
       setFormas_pagos2(false)
     }
-
-    // if (e.target.name==="cantidad" && e.target.value!=='' && formas_pagos2) {
-    //
-    // } else if (e.target.name==="cantidad" && e.target.value!=='' && !formas_pagos2) {
-    //   context.setModalShow({  show:true,
-    //                           size:"sm",
-    //                           message:  <div className="text-center">
-    //                                       <div>Para continuar, deber seleccionar una forma de pago</div>
-    //                                       <div className="btn btn-primary mt-3" onClick={()=> { context.setModalShow({  show:false,message:"",size:"sm", }); } }>Continuar</div>
-    //                                     </div>
-    //                         })
-    // }
 
   }
 
@@ -206,6 +193,8 @@ const App=(props)=>{
                             })
       return false
     }
+    // console.log(row.monto_pagos_realizados);
+    // return console.log(row.monto);
     let data            =   {}
         data.app        =   JSON.stringify(modulo)
         data.cuota      =   JSON.stringify(row)
@@ -460,10 +449,7 @@ const App=(props)=>{
                                         {Functions.format(row2.monto)}
                                       </div>
                                       <div className="col-12 col-sm-2">
-                                        <div className="d-none">{Functions.format(row2.monto_pagos_realizados)}</div>
-                                        {row2.pagos_realizados.map((row3,key3)=>{
-                                          return <div>{Functions.format(row3.monto)} <a target="_blank" href={Config.ConfigApirest+"PDF/imprimir_recibo_cuota?id="+row3.token}><FontAwesomeIcon icon={faFilePdf} /></a> </div>
-                                        })}
+                                        {Functions.format(row2.monto_pagos_realizados)}
                                       </div>
                                       <div className="col-12 col-sm-2">
                                         {Functions.format(row2.monto-row2.monto_pagos_realizados)}

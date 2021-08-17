@@ -4,7 +4,7 @@ import Functions from '../helpers/Functions';
 import Config from '../helpers/Config';
 import { faSearch,faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ClienteTabs from '../screens/ClienteTabs';
+import ClienteTabs from '../screens/ClienteTabsDos';
 
 
 let start         = 0
@@ -35,6 +35,7 @@ const Component=(props)=>{
 const App=(props)=>{
   const context                             =   React.useContext(StateContext);
   const [data, setData]                     =   useState([]);
+  const [sumas, setSumas]                     =   useState([]);
   const [paginas, setPaginas]               =   useState([]);
   const [paginaActual, setPaginaActual]     =   useState(1);
   const [privilegios, setPrivilegios]       =   useState([]);
@@ -74,6 +75,7 @@ const App=(props)=>{
     paginacion  =   Math.ceil(total_rows/limit)
 
     setData(data.response.data)
+    setSumas(data.response.sumas)
     if (data.response.tipo_usuarios) {
       setTipo_usuarios(data.response.tipo_usuarios)
     }
@@ -126,11 +128,7 @@ const App=(props)=>{
   return  <div className="row">
   {modulo[3] && !openCliente?<>
                 <div className="col-6 h5 border-bottom pb-2">{modulo[3]} {estatus===0?"(Papelera)":false}</div>
-                <div className="col-6 h5 border-bottom pb-2">
-                  <div className="input-group mb-3">
-                    <input type="text" className="form-control" placeholder="Filtrar..." name="filter" onChange={onChange}/>
-                  </div>
-                </div>
+
               </>:<>
                     <div className="col-12">
                       <div className="ml-sm-5">
@@ -142,28 +140,45 @@ const App=(props)=>{
                     </div>
                     <div className="col">
                       <div className="p-0 pt-2 p-sm-3 ">
-                        <ClienteTabs data={openCliente} />
+                        <ClienteTabs data={openCliente} setOpenCliente={setOpenCliente}  />
                       </div>
                     </div>
                   </>}
             {data.length && !openCliente>0?<>
               <table className="table table-striped">
                 <thead className="thead-dark">
+                  <td>#Factura</td>
                   <td>Nombres y apellidos</td>
-                  <td>Teléfono</td>
-                  <td>Celular</td>
+                  <td>Fechas</td>
+                  <td>Deuda total</td>
+                  <td>Monto Pagado</td>
+                  <td>Monto Resta</td>
                   <td className="text-center">Acción</td>
                 </thead>
                 <tbody>
                   {data.map((row,key)=>{
                     return  <tr className="col-12 col-sm-3 mb-3 component-table" key={key}>
+                              <td>{row.factura_id}</td>
                               <td><b>{row.nombres} {row.apellidos}</b></td>
-                              <td>{row.telefono}</td>
-                              <td>{row.celular}</td>
+                              <td>{row.fecha_factura_string}</td>
+                              <td>{Functions.format(row.monto_total_facturado)}</td>
+                              <td>{Functions.format(row.monto_total_pagado)}</td>
+                              <td>{Functions.format(row.monto_total_resta)}</td>
                               <td className="text-center"><FontAwesomeIcon onClick={(e)=>{open(e,row)}} icon={faSearch} className="cursor-pointer"/></td>
                             </tr>
                   })}
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td>Total</td>
+                    <td><b>{Functions.format(sumas.monto_total_facturado)}</b></td>
+                    <td><b>{Functions.format(sumas.monto_total_pagado)}</b></td>
+                    <td><b>{Functions.format(sumas.monto_total_resta)}</b></td>
+                    <td className="text-center"></td>
+                  </tr>
+                </tfoot>
               </table>
             </>:false}
             {!openCliente?<>
