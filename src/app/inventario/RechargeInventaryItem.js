@@ -17,7 +17,7 @@ const App=()=>{
   const [inputs, setInputs] =   useState(false);
   const [required, setRequired] =   useState(true);
   const [record, setRecord] =   useState([]);
-  const [modulo, setModulo] =   useState(false);
+  const [modulo, setModulo] =   useState(true);
   const [privilegios, setPrivilegios]       =   useState({});
 
 
@@ -82,7 +82,7 @@ const App=()=>{
   },[modulo])
 
   return <>
-            {modulo?<><div className="card">
+            {modulo || 1===1?<><div className="card">
                 <div className="card-body">
                   <h5>{modulo[3]} <b>{inputs.label} ({inputs.codigo})</b></h5>
                   <form onSubmit={onSubmit} id="myForm">

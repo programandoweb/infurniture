@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import queryString from 'query-string';
 const queryStringParams = queryString.parse(window.location.search);
 
-const iva_monto=19
+const iva_monto = 19
 
 const App=(props)=>{
 
@@ -51,6 +51,15 @@ const App=(props)=>{
     }else if (e.target.name==="forma_pago" && e.target.value==='') {
       setFormas_pagos2(false)
     }
+
+    if (e.target.name==="financiacion" && e.target.value!=='') {
+      let financiacion_ = {...financiacion}
+          financiacion_.total=e.target.value
+          setFinanciacion(financiacion_)
+      //console.log(financiacion);
+    }
+
+
 
     // if (e.target.name==="cantidad" && e.target.value!=='' && formas_pagos2) {
     //
@@ -311,21 +320,9 @@ const App=(props)=>{
                                         <div className="row justify-content-end">
                                           <div className="col-12 col-sm-4">
                                             <div className="row bg-dark text-white p-2">
-                                              <div className="col text-center">Subtotal:</div>
-                                              <div className="col text-right mr-3">
-                                                {Functions.format(subtotal)}
-                                              </div>
-                                            </div>
-                                            <div className="row p-2">
-                                              <div className="col text-center">IVA:</div>
-                                              <div className="col text-right mr-3">
-                                                {Functions.format((subtotal*19)/100)}
-                                              </div>
-                                            </div>
-                                            <div className="row p-2">
                                               <div className="col text-center">Total:</div>
                                               <div className="col text-right mr-3">
-                                                {Functions.format(subtotal+((subtotal*19)/100))}
+                                                {Functions.format(subtotal)}
                                               </div>
                                             </div>
                                           </div>
@@ -337,7 +334,16 @@ const App=(props)=>{
                   {financiacion && financiacion.op_facturas_id!==undefined && financiacion.financiacion===undefined?<>
                     <div className="col-12 col-sm-3">
                       <div><b>Monto factura:</b></div>
-                      <div className="text-left">{Functions.format(financiacion.total)}</div>
+                      <div className="text-left">
+                        <input  className="form-control text-center"
+                                type="text"
+                                event="solonumeros"
+                                name="financiacion"
+                                placeholder="Monto"
+                                defaultValue={financiacion.total}
+                                onChange={onChange}
+                        />
+                      </div>
                     </div>
                     <div className="col-12 col-sm-2">
                       <div><b>Inicial</b></div>
@@ -420,65 +426,68 @@ const App=(props)=>{
                             </div>
                           </div>
                         </div>
-                        <div className="col-12 col-sm-3">
-                          <div><b>Monto financiación:</b></div>
-                          <div className="text-left">{Functions.format(parseFloat(financiacion.financiacion.monto_total))}</div>
-                        </div>
-                        <div className="col-12 col-sm-2">
-                          <div><b>Inicial</b></div>
-                          <div>{Functions.format(parseFloat(financiacion.financiacion.monto_inicial))}</div>
-                        </div>
-                        <div className="col-12 col-sm-2">
-                          <div><b>Cuotas</b></div>
-                          <div>{financiacion.financiacion.cuotas.length}</div>
-                        </div>
-                        <hr/>
-                        <div className="col-12 mt-3">
-                          <div className="row">
-                            <div className="col-12 col-sm-2">
-                              <b>Fecha cuotas</b>
-                            </div>
-                            <div className="col-12 col-sm-2">
-                              <b>Montos cuotas</b>
-                            </div>
-                            <div className="col-12 col-sm-2">
-                              <b>Montos Pagado</b>
-                            </div>
-                            <div className="col-12 col-sm-2">
-                              <b>Montos Pendiente</b>
-                            </div>
-                            <div className="col">
-                              <b>Pagar</b>
-                            </div>
+                        {financiacion.financiacion.cuotas!==undefined?<>
+                          <div className="col-12 col-sm-3">
+                            <div><b>Monto financiación:</b></div>
+                            <div className="text-left">{Functions.format(parseFloat(financiacion.financiacion.monto_total))}</div>
                           </div>
-                          {financiacion.financiacion.cuotas.map((row2,key2)=>{
-                            return  <div className="row mb-2" key={key2}>
-                                      <div className="col-12 col-sm-2">
-                                        {row2.fecha}
-                                      </div>
-                                      <div className="col-12 col-sm-2">
-                                        {Functions.format(row2.monto)}
-                                      </div>
-                                      <div className="col-12 col-sm-2">
-                                        <div className="d-none">{Functions.format(row2.monto_pagos_realizados)}</div>
-                                        {row2.pagos_realizados.map((row3,key3)=>{
-                                          return <div>{Functions.format(row3.monto)} <a target="_blank" href={Config.ConfigApirest+"PDF/imprimir_recibo_cuota?id="+row3.token}><FontAwesomeIcon icon={faFilePdf} /></a> </div>
-                                        })}
-                                      </div>
-                                      <div className="col-12 col-sm-2">
-                                        {Functions.format(row2.monto-row2.monto_pagos_realizados)}
-                                      </div>
-                                      <div className="col">
-                                        {row2.monto-row2.monto_pagos_realizados>0?<input type="number" placeholder={"monto a cancelar " +Functions.format(row2.monto)+" ó pagos parciales"} name="monto_pago" className="form-control" onChange={(e)=>setMontopagoCuota(e.target.value)}/>:false}
-                                      </div>
-                                      <div className="col">
-                                        {row2.monto-row2.monto_pagos_realizados>0?<div className="btn btn-primary" onClick={()=>pagoCuota(row2)}>Agregar Pago</div>:false}
-                                      </div>
-                                    </div>
-                          })}
+                          <div className="col-12 col-sm-2">
+                            <div><b>Inicial</b></div>
+                            <div>{Functions.format(parseFloat(financiacion.financiacion.monto_inicial))}</div>
+                          </div>
+                          <div className="col-12 col-sm-2">
+                            <div><b>Cuotas</b></div>
+                            <div>{financiacion.financiacion.cuotas!==undefined?financiacion.financiacion.cuotas.length:0}</div>
+                          </div>
+                          <hr/>
+                          <div className="col-12 mt-3">
+                            <div className="row">
+                              <div className="col-12 col-sm-2">
+                                <b>Fecha cuotas</b>
+                              </div>
+                              <div className="col-12 col-sm-2">
+                                <b>Montos cuotas</b>
+                              </div>
+                              <div className="col-12 col-sm-2">
+                                <b>Montos Pagado</b>
+                              </div>
+                              <div className="col-12 col-sm-2">
+                                <b>Montos Pendiente</b>
+                              </div>
+                              <div className="col">
+                                <b>Pagar</b>
+                              </div>
+                            </div>
+                            {financiacion.financiacion.cuotas!==undefined?<>
+                              {financiacion.financiacion.cuotas.map((row2,key2)=>{
+                                return  <div className="row mb-2" key={key2}>
+                                          <div className="col-12 col-sm-2">
+                                            {row2.fecha}
+                                          </div>
+                                          <div className="col-12 col-sm-2">
+                                            {Functions.format(row2.monto)}
+                                          </div>
+                                          <div className="col-12 col-sm-2">
+                                            <div className="d-none">{Functions.format(row2.monto_pagos_realizados)}</div>
+                                            {row2.pagos_realizados.map((row3,key3)=>{
+                                              return <div>{Functions.format(row3.monto)} <a target="_blank" href={Config.ConfigApirest+"PDF/imprimir_recibo_cuota?id="+row3.token}><FontAwesomeIcon icon={faFilePdf} /></a> </div>
+                                            })}
+                                          </div>
+                                          <div className="col-12 col-sm-2">
+                                            {Functions.format(row2.monto-row2.monto_pagos_realizados)}
+                                          </div>
+                                          <div className="col">
+                                            {row2.monto-row2.monto_pagos_realizados>0?<input type="number" placeholder={"monto a cancelar " +Functions.format(row2.monto)+" ó pagos parciales"} name="monto_pago" className="form-control" onChange={(e)=>setMontopagoCuota(e.target.value)}/>:false}
+                                          </div>
+                                          <div className="col">
+                                            {row2.monto-row2.monto_pagos_realizados>0?<div className="btn btn-primary" onClick={()=>pagoCuota(row2)}>Agregar Pago</div>:false}
+                                          </div>
+                                        </div>
+                              })}
 
-                        </div>
-
+                            </>:false}
+                          </div>
+                        </>:false}
                   </> }
             </div>}
 

@@ -30,7 +30,7 @@ const App=(props)=>{
                   <Tab eventKey="gestion" title="Gestión comercial">
                     <Gestion {...props}/>
                   </Tab>
-                  <Tab eventKey="contratos" title="Financiación">
+                  <Tab eventKey="contratos" title="Facturas y Financiación">
                     <Contratos {...props}/>
                   </Tab>
                 </Tabs>

@@ -149,7 +149,6 @@ const App=(props)=>{
                 <thead className="thead-dark">
                   <tr>
                     <th>Artículo</th>
-                    <th>Código</th>
                     <th className="text-center">Entrada</th>
                     <th className="text-center">Salida</th>
                     <th className="text-center">Disponibles</th>
@@ -160,7 +159,6 @@ const App=(props)=>{
                   {data.map((row,key)=>{
                     return  <tr className="col-12 col-sm-3 mb-3 component-table" key={key}>
                               <td>{row.label}</td>
-                              <td>{row.codigo}</td>
                               <td className="text-center">{row.entrada}</td>
                               <td className="text-center">{row.salida}</td>
                               <td className="text-center">{row.restante}</td>
