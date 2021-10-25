@@ -143,7 +143,7 @@ const App=(props)=>{
                       Agregar Item
                     </NavLink>
                   </div>
-                </div>
+              </div>
               </div>
               <table className="table table-striped">
                 <thead className="thead-dark">

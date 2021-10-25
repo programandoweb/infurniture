@@ -112,8 +112,8 @@ const App=(props)=>{
                     cantidad:inputs_.cantidad,
                     label:string2.label,
                     codigo:string2.codigo,
-                    precio_credito:string2_.precio_credito,
-                    precio_decontado:string2_.precio_decontado,
+                    precio_credito:inputs_.precio,
+                    precio_decontado:inputs_.precio,
                   }
     let articulos_  = [...articulos]
         articulos_.push(item)
@@ -205,16 +205,16 @@ const App=(props)=>{
     let monto_pagos_realizados  = parseFloat(row.monto_pagos_realizados)
     let monto_a_financiar       = parseFloat(row.monto)
 
-    if (montopagoCuota>monto_a_financiar-monto_pagos_realizados) {
-      context.setModalShow({  show:true,
-                              size:"sm",
-                              message:  <div className="text-center">
-                                          <div>El abono supera el monto restante de la cuota</div>
-                                          <div className="btn btn-primary mt-3" onClick={()=> { context.setModalShow({  show:false,message:"",size:"sm", }); } }>Reintentar</div>
-                                        </div>
-                            })
-      return false
-    }
+    // if (montopagoCuota>monto_a_financiar-monto_pagos_realizados) {
+    //   context.setModalShow({  show:true,
+    //                           size:"sm",
+    //                           message:  <div className="text-center">
+    //                                       <div>El abono supera el monto restante de la cuota</div>
+    //                                       <div className="btn btn-primary mt-3" onClick={()=> { context.setModalShow({  show:false,message:"",size:"sm", }); } }>Reintentar</div>
+    //                                     </div>
+    //                         })
+    //   return false
+    // }
     let data            =   {}
         data.app        =   JSON.stringify(modulo)
         data.cuota      =   JSON.stringify(row)
@@ -235,10 +235,12 @@ const App=(props)=>{
     }
   }
 
+  let activeInput=true
+
   return  <>
             {!financiacion?<>
               <div className="row">
-                <div className="col-12 col-sm-3">
+                <div className="col-12">
                   <Select
                     required={true}
                     value={0}
@@ -248,7 +250,7 @@ const App=(props)=>{
                     onChange ={onChange}
                   />
                 </div>
-                <form id="myForm" className="row">
+                <form id="myForm" className="row p-3">
                   {formas_pagos2?<>
                     <div className="col-12 col-sm-4">
                       <Select
@@ -271,6 +273,16 @@ const App=(props)=>{
                               min="1"
                               max={max}
                               placeholder="Cantidad"
+                              onChange={onChange}
+                      />
+                    </div>
+                    <div className="col-12 col-sm-2">
+                      <input  className="form-control text-center"
+                              type="text"
+                              event="solonumeros"
+                              name="precio"
+                              min="1000"
+                              placeholder="Precio"
                               onChange={onChange}
                       />
                     </div>
@@ -435,9 +447,9 @@ const App=(props)=>{
                             <div><b>Inicial</b></div>
                             <div>{Functions.format(parseFloat(financiacion.financiacion.monto_inicial))}</div>
                           </div>
-                          <div className="col-12 col-sm-2">
+                          <div className="col-12 col-sm-2 text-center">
                             <div><b>Cuotas</b></div>
-                            <div>{financiacion.financiacion.cuotas!==undefined?financiacion.financiacion.cuotas.length:0}</div>
+                            <div className="text-center">{financiacion.financiacion.cuotas!==undefined?financiacion.financiacion.cuotas.length:0}</div>
                           </div>
                           <hr/>
                           <div className="col-12 mt-3">
@@ -467,20 +479,39 @@ const App=(props)=>{
                                           <div className="col-12 col-sm-2">
                                             {Functions.format(row2.monto)}
                                           </div>
-                                          <div className="col-12 col-sm-2">
+                                          <div className="col-12 col-sm-2 text-right">
                                             <div className="d-none">{Functions.format(row2.monto_pagos_realizados)}</div>
                                             {row2.pagos_realizados.map((row3,key3)=>{
                                               return <div>{Functions.format(row3.monto)} <a target="_blank" href={Config.ConfigApirest+"PDF/imprimir_recibo_cuota?id="+row3.token}><FontAwesomeIcon icon={faFilePdf} /></a> </div>
                                             })}
                                           </div>
-                                          <div className="col-12 col-sm-2">
-                                            {Functions.format(row2.monto-row2.monto_pagos_realizados)}
+                                          <div className="col-12 col-sm-2 text-center">
+                                            {row2.deuda_salda==='NO'?<>
+
+                                              {(row2.monto - row2.monto_pagos_realizados<0)?"0.00":Functions.format(row2.monto - row2.monto_pagos_realizados) }
+
+                                            </>:"0,00"}
+
+                                          </div>
+                                          <div className="col ">
+                                            {row2.deuda_salda==='NO'?<>
+
+                                              {row2.monto-row2.monto_pagos_realizados>0 && activeInput? <>
+                                                                                                          <input type="number" placeholder={"monto a cancelar " +Functions.format(row2.monto)+" ó pagos parciales"} name="monto_pago" className="form-control" onChange={(e)=>setMontopagoCuota(e.target.value)}/>
+                                                                                                        </>:false}
+
+                                            </>:false}
+
                                           </div>
                                           <div className="col">
-                                            {row2.monto-row2.monto_pagos_realizados>0?<input type="number" placeholder={"monto a cancelar " +Functions.format(row2.monto)+" ó pagos parciales"} name="monto_pago" className="form-control" onChange={(e)=>setMontopagoCuota(e.target.value)}/>:false}
-                                          </div>
-                                          <div className="col">
-                                            {row2.monto-row2.monto_pagos_realizados>0?<div className="btn btn-primary" onClick={()=>pagoCuota(row2)}>Agregar Pago</div>:false}
+                                            {row2.deuda_salda==='NO'?<>
+
+                                              {row2.monto-row2.monto_pagos_realizados>0 && activeInput? <>
+                                                                                                          <div className="btn btn-primary" onClick={()=>pagoCuota(row2)}>Agregar Pago</div>
+                                                                                                          {activeInput=false}
+                                                                                                        </>:false}
+
+                                            </>:false}
                                           </div>
                                         </div>
                               })}

@@ -3,7 +3,7 @@ import StateContext from '../../helpers/ContextState';
 import Functions from '../../helpers/Functions';
 import Config from '../../helpers/Config';
 import Factura from './Factura';
-import { faSearch,faCashRegister } from "@fortawesome/free-solid-svg-icons";
+import { faSearch,faCashRegister,faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import queryString from 'query-string';
@@ -20,7 +20,7 @@ const App=(props)=>{
   useEffect(() => {
     if (!open) {
       getInit()
-    }    
+    }
   },[open])
 
   const getInit=()=>{
@@ -34,6 +34,18 @@ const App=(props)=>{
     if (data.response.data!==undefined) {
       setCotizaciones(data.response.data)
     }
+  }
+
+  const deleteFactura=(row)=>{
+    let data        =   {...row}
+        data.app    =   JSON.stringify(modulo)
+        data.token  =   props.data.token
+    Functions.PostAsync("GestionInventario","DelFacturas",data,context,{name:"reiniciar",funct:reiniciar})
+
+  }
+
+  const reiniciar=()=>{
+    getInit()
   }
 
   return  <div className="pt-3">
@@ -66,11 +78,12 @@ const App=(props)=>{
                             {cotizaciones.map((row,key)=>{
                               return  <tr>
                                         <td>{row.op_facturas_id}</td>
-                                        <td className="text-right">{row.financiacion.total_pagos_realizados!==undefined?Functions.format(parseFloat(row.financiacion.total_pagos_realizados) + parseFloat(row.financiacion.monto_inicial)):"-"}</td>
-                                        <td className="text-right">{row.financiacion.total_pagos_realizados!==undefined?Functions.format( parseFloat(row.total) -  (parseFloat(row.financiacion.total_pagos_realizados) + parseFloat(row.financiacion.monto_inicial) ) )  :"-"}</td>
-                                        <td className="text-right">{Functions.format(row.total)}</td>
+                                        <td className="text-right">{row.financiacion.total_pagos_realizados!==undefined?Functions.format( parseFloat(row.financiacion.total_pagos_realizados) )  :"-"}</td>
+                                        <td className="text-right">{row.financiacion.total_pagos_realizados!==undefined?Functions.format( parseFloat(row.subtotal) - parseFloat(row.financiacion.total_pagos_realizados) )  :"-"}</td>
+                                        <td className="text-right">{Functions.format(row.subtotal)}</td>
                                         <td className="text-center">
-                                          <FontAwesomeIcon icon={faSearch} className="cursor-pointer" onClick={()=>setOpen(row)}/>
+                                          <FontAwesomeIcon icon={faSearch} className="cursor-pointer mr-2" onClick={()=>setOpen(row)}/>
+                                          <FontAwesomeIcon icon={faTrashAlt} className="cursor-pointer" onClick={()=>deleteFactura(row)}/>
                                         </td>
                                       </tr>
                             })}
