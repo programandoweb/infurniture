@@ -61,6 +61,8 @@ const App=(props)=>{
   const [totalPagado, setPagado]            =   useState(0);
   const [totalDebe, setDebe]                =   useState(0);
   const [totalAbonos, setTotalAbonos]       =   useState(0);
+  const [totalExonerado, setTotalExonerado] =   useState(0);
+
   const modulo                              =   Functions.segments_modulos(props.app)
 
 
@@ -95,17 +97,19 @@ const App=(props)=>{
 
     //setData(data.response.data)
 
-    let lista_nueva     = []
-    let totalDeuda_     = 0;
-    let totalPagado_    = 0;
-    let totalDebe_      = 0;
+    let lista_nueva      = []
+    let totalDeuda_      = 0;
+    let totalPagado_     = 0;
+    let totalDebe_       = 0;
     let totalAbonos_     = 0;
+    let totalExonerado_  = 0;
 
     data.response.data.map((row,key)=>{
       lista_nueva.push(row)
 
-      totalDeuda_   +=  parseFloat(row.monto_total_facturado) ;
-      totalPagado_  +=  parseFloat(row.monto_total_pagado);
+      totalDeuda_      +=  parseFloat(row.monto_total_facturado) ;
+      totalPagado_     +=  parseFloat(row.monto_total_pagado);
+      totalExonerado_  +=  parseFloat(row.pagos_exonerados);
       if (row.deuda_salda==='NO') {
         totalDebe_+=  (row.monto_total_facturado - row.monto_total_pagado<0)?0:row.monto_total_facturado - row.monto_total_pagado;
       }
@@ -117,6 +121,8 @@ const App=(props)=>{
     setDebe(totalDebe_)
     setTotalAbonos(totalAbonos_)
     setData(lista_nueva)
+    setTotalExonerado(totalExonerado_)
+
 
     setSumas(data.response.sumas)
     if (data.response.tipo_usuarios) {
@@ -214,6 +220,7 @@ const App=(props)=>{
                   <td className="text-center">Fechas de la cuota</td>
                   <td>Monto recaudar</td>
                   <td>Monto Recaudado</td>
+                  <td>Monto Exonerado</td>
                   <td>Monto Debe</td>
 
                 </thead>
@@ -224,8 +231,9 @@ const App=(props)=>{
                               <td><b>{row.nombres} {row.apellidos}</b></td>
                               <td className="text-center">{row.fecha_factura_string}</td>
                               <td className="text-center">{Functions.format(row.monto_total_facturado)}</td>
+                              <td className="text-center">{Functions.format(row.monto_total_facturado)}</td>
                               <td className="text-center">
-                                {Functions.format(row.monto_total_pagado)}
+                                {Functions.format(row.pagos_exonerados)}
                               </td>
                               <td className="text-center">
                                 {row.deuda_salda==='NO'?<>
@@ -233,9 +241,7 @@ const App=(props)=>{
                                 </>:<>
                                   0,00
                                 </>}
-
                               </td>
-
                             </tr>
                   })}
                 </tbody>
@@ -246,8 +252,8 @@ const App=(props)=>{
                     <td className="text-center">Total</td>
                     <td className="text-center"><b>{Functions.format(totalDeuda)}</b></td>
                     <td className="text-center"><b>{Functions.format(totalPagado)}</b></td>
+                    <td className="text-center"><b>{Functions.format(totalExonerado)}</b></td>
                     <td className="text-center"><b>{Functions.format(totalDebe)}</b></td>
-
                   </tr>
                 </tfoot>
               </table>

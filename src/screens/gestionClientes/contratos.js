@@ -3,7 +3,7 @@ import StateContext from '../../helpers/ContextState';
 import Functions from '../../helpers/Functions';
 import Config from '../../helpers/Config';
 import Factura from './Factura';
-import { faSearch,faCashRegister,faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faSearch,faCashRegister,faTrashAlt,faHandHoldingUsd } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import queryString from 'query-string';
@@ -48,6 +48,31 @@ const App=(props)=>{
     getInit()
   }
 
+  const handlePagoAdelantado=(row)=>{
+    context.setModalShow({
+      show:true,
+      message:<div className="text-center">
+                <div>¿Desea saldar esta cuenta?</div>
+                <div className="row justify-content-center mt-2">
+                  <div className="col" onClick={()=>{subtmitPagoAdelantado(row);context.setModalShow({show:false});}}>
+                    <div className="btn btn-danger btn-block mt-3">Si</div>
+                  </div>
+                  <div className="col" onClick={()=>{context.setModalShow({show:false});}}>
+                    <div className="btn btn-primary btn-block mt-3">No</div>
+                  </div>
+                </div>
+              </div>,
+      size:""
+    })
+  }
+
+  const subtmitPagoAdelantado=(row)=>{
+    let data        =   {...row}
+        data.app    =   JSON.stringify(modulo)
+        data.token  =   props.data.token
+    Functions.PostAsync("GestionInventario","PagoAdelantado",data,context,{name:"reiniciar",funct:reiniciar})
+  }
+
   return  <div className="pt-3">
             <div className="border bg-gray">
               <div className="p-3 ">
@@ -69,9 +94,10 @@ const App=(props)=>{
                       <thead>
                         <th>Factura</th>
                         <th width="150" className="text-right">Pagos</th>
-                        <th width="150" className="text-right">Saldo Pendiente</th>
+                        <th width="150" className="text-right">Saldo pendiente</th>
+                        <th width="200" className="text-right">Saldo exonerado</th>
                         <th width="150" className="text-right">Monto total</th>
-                        <th width="50" className="text-right">Acción</th>
+                        <th width="100" className="text-right">Acción</th>
                       </thead>
                       <tbody>
                         {cotizaciones.length>0?<>
@@ -80,8 +106,12 @@ const App=(props)=>{
                                         <td>{row.op_facturas_id}</td>
                                         <td className="text-right">{row.financiacion.total_pagos_realizados!==undefined?Functions.format( parseFloat(row.financiacion.total_pagos_realizados) )  :"-"}</td>
                                         <td className="text-right">{row.financiacion.total_pagos_realizados!==undefined?Functions.format( parseFloat(row.subtotal) - parseFloat(row.financiacion.total_pagos_realizados) )  :"-"}</td>
+                                        <td className="text-right">
+                                          {row.financiacion.pagos_exonerados_string!==undefined?row.financiacion.pagos_exonerados_string:"-"}
+                                        </td>
                                         <td className="text-right">{Functions.format(row.subtotal)}</td>
                                         <td className="text-center">
+                                          {parseFloat(row.subtotal) - parseFloat(row.financiacion.total_pagos_realizados)>0?<FontAwesomeIcon icon={faHandHoldingUsd} className="cursor-pointer mr-2" onClick={()=>handlePagoAdelantado(row)}/>:false}
                                           <FontAwesomeIcon icon={faSearch} className="cursor-pointer mr-2" onClick={()=>setOpen(row)}/>
                                           <FontAwesomeIcon icon={faTrashAlt} className="cursor-pointer" onClick={()=>deleteFactura(row)}/>
                                         </td>
